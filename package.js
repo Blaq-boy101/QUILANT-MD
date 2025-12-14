@@ -1,5 +1,5 @@
 {
-  "name": "socket-chat-example",
+  "name": "QUILANT-MD",
   "version": "0.0.1",
   "description": "my first socket.io app",
   "type": "commonjs",
