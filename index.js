@@ -6,6 +6,8 @@ const { Server } = require('socket.io');
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
+connectionStateRecovery: {}
+)};
 
 app.get('/', (req, res) => {
   res.sendFile(join(__dirname, 'index.html'));
@@ -51,6 +53,7 @@ server.listen(3000, () => {
 
   const form = document.getElementById('form');
   const input = document.getElementById('input');
+const messages = document.getElementById('messages');
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -60,10 +63,30 @@ server.listen(3000, () => {
     }
   });
 
+socket.on('chat message', (msg) => {
+    const item = document.createElement('li');
+    item.textContent = msg;
+    messages.appendChild(item);
+    window.scrollTo(0, document.body.scrollHeight);
+  });
 </script>
   io.on('connection', (socket) => {
   socket.on('chat message', (msg) => {
     console.log('message: ' + msg);
+
+  });
+});
+
+    // this will emit the event to all connected sockets
+io.emit('hello', 'world'); 
+
+    io.on('connection', (socket) => {
+  socket.broadcast.emit('hi');
+});
+    
+    socket.emit('hello', 'world');
+
+    
   });
 });
   </body>
