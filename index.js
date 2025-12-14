@@ -2,6 +2,8 @@ const express = require('express');
 const { createServer } = require('node:http');
 const { join } = require('node:path');
 const { Server } = require('socket.io');
+const sqlite3 = require('sqlite3');
+const { open } = require('sqlite');
 
 const app = express();
 const server = createServer(app);
@@ -42,7 +44,24 @@ server.listen(3000, () => {
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
+    <button id="toggle-btn">Disconnect</button>
+</form>
+      <script>  
+      const toggleButton = document.getElementById('toggle-btn');
+
+  toggleButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (socket.connected) {
+      toggleButton.innerText = 'Connect';
+      socket.disconnect();
+    } else {
+      toggleButton.innerText = 'Disconnect';
+      socket.connect();
+    }
+  });
+<script>
+  npm install sqlite sqlite3
+      </form>
       <script src="/socket.io/socket.io.js"></script>
 <script>
   const socket = io();
