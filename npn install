@@ -1,0 +1,76 @@
+npm install @socket.io/redis-streams-adapter redis
+
+import { createClient } from "redis";
+import { Server } from "socket.io";
+import { createAdapter } from "@socket.io/redis-streams-adapter";
+
+const redisClient = createClient({ url: "redis://localhost:6379" });
+
+await redisClient.connect();
+
+const io = new Server({
+  adapter: createAdapter(redisClient)
+});
+
+io.listen(3000);
+import { createCluster } from "redis";
+import { Server } from "socket.io";
+import { createAdapter } from "@socket.io/redis-streams-adapter";
+
+const redisClient = createCluster({
+  rootNodes: [
+    {
+      url: "redis://localhost:7000",
+    },
+    {
+      url: "redis://localhost:7001",
+    },
+    {
+      url: "redis://localhost:7002",
+    },
+  ],
+});
+
+await redisClient.connect();
+
+const io = new Server({
+  adapter: createAdapter(redisClient)
+});
+
+io.listen(3000);
+
+import { Redis } from "ioredis";
+import { Server } from "socket.io";
+import { createAdapter } from "@socket.io/redis-streams-adapter";
+
+const redisClient = new Redis();
+
+const io = new Server({
+  adapter: createAdapter(redisClient)
+});
+
+io.listen(3000);
+import { Cluster } from "ioredis";
+import { Server } from "socket.io";
+import { createAdapter } from "@socket.io/redis-streams-adapter";
+
+const redisClient = new Cluster([
+  {
+    host: "localhost",
+    port: 7000,
+  },
+  {
+    host: "localhost",
+    port: 7001,
+  },
+  {
+    host: "localhost",
+    port: 7002,
+  },
+]);
+
+const io = new Server({
+  adapter: createAdapter(redisClient)
+});
+
+io.listen(3000);
